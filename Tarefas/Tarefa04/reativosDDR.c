@@ -179,6 +179,7 @@ void updateArrow() {
         if(v_arrow[i].y>SCREEN_HEIGHT) {
             if(v_arrow[i].activated==true){
                 iniArrow();
+                gameSpeed=0.1;
             }
             else {
                 v_arrow[i].y=0-(ARROW_HEIGHT+ARROW_PADD);
@@ -246,8 +247,9 @@ bool checkColision(DDR_type type){
         if(type==v_arrow[i].type && v_arrow[i].activated==true){
             if(v_arrow[i].y>SCREEN_HEIGHT-BUTTON_OFFSET-BUTTON_PADD
             && v_arrow[i].y+ARROW_HEIGHT<SCREEN_HEIGHT-BUTTON_OFFSET+BUTTON_HEIGHT+BUTTON_PADD){
-                printf("sim!\n");
                 v_arrow[i].activated=false;
+                gameSpeed+=0.003;
+                printf("sim!\n");
                 return true;
             }
         }
