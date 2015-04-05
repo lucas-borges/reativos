@@ -1,6 +1,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 #define ARROW_WIDTH 64//296
 #define ARROW_HEIGHT 64//214
@@ -8,7 +9,7 @@
 #define ARROW_NUMB 9
 #define BUTTON_WIDTH 75//296
 #define BUTTON_HEIGHT 75//214
-#define BUTTON_OFFSET 200
+#define BUTTON_OFFSET 100
 #define BUTTON_PADD 20
 #define SCREEN_WIDTH 480
 #define SCREEN_HEIGHT 640
