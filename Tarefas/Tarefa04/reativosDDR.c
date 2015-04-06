@@ -250,11 +250,9 @@ bool checkColision(DDR_type type){
             && v_arrow[i].y+ARROW_HEIGHT<SCREEN_HEIGHT-BUTTON_OFFSET+BUTTON_HEIGHT+BUTTON_PADD){
                 v_arrow[i].activated=false;
                 gameSpeed+=0.003;
-                printf("sim!\n");
                 return true;
             }
         }
     }
-    printf("nao!!!!\n");
     return false;
 }
