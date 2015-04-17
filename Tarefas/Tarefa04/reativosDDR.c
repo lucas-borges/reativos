@@ -13,7 +13,7 @@
 #define BUTTON_PADD 20
 #define SCREEN_WIDTH 480
 #define SCREEN_HEIGHT 640
-
+#define BASE_SPEED 0.1
 typedef enum { false, true } bool;
 typedef enum a_type {
     right,
@@ -35,13 +35,14 @@ SDL_Texture* button_tex = NULL;
 SDL_Event e;
 
 DDR_arrow v_arrow[ARROW_NUMB];
-double gameSpeed=0.1;
+double gameSpeed=BASE_SPEED;
 Uint32 t_now, t_old;
 
 bool init();
 bool loadMedia();
 void close ();
 void iniArrow();
+void restartGame (double speed);
 void updateArrow();
 void renderArrow ( DDR_arrow *arw);
 void createArrow(DDR_arrow *arrow);
@@ -82,6 +83,9 @@ int main (int argv, char* args[]) {
                         break;
                     case SDLK_RIGHT:
                         checkColision(right);
+                        break;
+                    case SDLK_r:
+                        restartGame(BASE_SPEED);
                         break;
                     default:
                         printf("Invalid input!\n");
@@ -173,14 +177,17 @@ void iniArrow(){
         createArrow(&v_arrow[i]);
     }
 }
+void restartGame (double speed){
+    iniArrow();
+    gameSpeed=speed;
+}
 void updateArrow() {
     int i;
     for(i=0;i<ARROW_NUMB;i++){
         v_arrow[i].y+=((t_now-t_old)*gameSpeed);
         if(v_arrow[i].y>SCREEN_HEIGHT) {
             if(v_arrow[i].activated==true){
-                iniArrow();
-                gameSpeed=0.1;
+                restartGame(BASE_SPEED);
             }
             else {
                 v_arrow[i].y=0-(ARROW_HEIGHT+ARROW_PADD);
