@@ -51,12 +51,13 @@ var _SDL_Window* window;
     end
 
 /******** [C_ren] Create SDL_Renderer (Destroy on finalization) ********/
-
-var _SDL_Renderer* renderer;
+native do
+    SDL_Renderer* renderer=NULL;
+end
     finalize
-        renderer = _SDL_CreateRenderer(window, -1, _SDL_RENDERER_ACCELERATED | _SDL_RENDERER_PRESENTVSYNC);
+        _renderer = _SDL_CreateRenderer(window, -1, _SDL_RENDERER_ACCELERATED | _SDL_RENDERER_PRESENTVSYNC);
     with
-        _SDL_DestroyRenderer(renderer);
+        _SDL_DestroyRenderer(_renderer);
     end
 
 /******** [C_t_ar] Load SDL_Texture (arrow) (Destroy on finalization) ********/
@@ -93,7 +94,7 @@ do
     
     par/or do
         every SDL_REDRAW do
-            _SDL_RenderCopyEx(renderer,tex_arrow,null,&renderQuad,0/*angle*/,null,_SDL_FLIP_NONE);
+            _SDL_RenderCopyEx(_renderer,tex_arrow,null,&renderQuad,0/*angle*/,null,_SDL_FLIP_NONE);
         end
     with
         await 5s;
@@ -108,7 +109,7 @@ par/or do
 with
     /* set background color */
     every SDL_REDRAW do
-    _SDL_SetRenderDrawColor(renderer,255,255,255,255);
+    _SDL_SetRenderDrawColor(_renderer,255,255,255,255);
     end
 with
     spawn Arrow with
@@ -120,7 +121,7 @@ with
 with
     /* update screen */
     every SDL_REDRAW do
-        _SDL_RenderPresent(renderer);
+        _SDL_RenderPresent(_renderer);
     end
 with
     /* calculate FPS */
