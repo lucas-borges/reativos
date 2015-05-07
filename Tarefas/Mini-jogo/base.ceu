@@ -4,8 +4,8 @@
 		[a_t_enum]  Arrow types enum
 		[C_win]	    Create SDL_Window
 		[C_ren]     Create SDL_Renderer
-		[C_t_ar]    Load SDL_Texture (arrow)
-		[C_t_but]   Load SDL_Texture (button)
+		[C_tex]    Load SDL_Texture 
+		
 		[Cl_arrow]  Arrow class
 		[G_beg]     GAME?
 		
@@ -60,9 +60,12 @@ end
         _SDL_DestroyRenderer(_renderer);
     end
 
-/******** [C_t_ar] Load SDL_Texture (arrow) (Destroy on finalization) ********/
+/******** [C_tex] Load SDL_Texture  (Destroy on finalization) ********/
 
-var _SDL_Texture* tex_arrow;
+native do
+    SDL_Texture* tex_arrow, tex_button;
+end
+
     finalize
         tex_arrow = _IMG_LoadTexture(renderer, "arrow.png");
     with
@@ -70,9 +73,6 @@ var _SDL_Texture* tex_arrow;
     end
     _assert(tex_arrow != null);
 
-/******** [C_t_but] Load SDL_Texture (button) (Destroy on finalization) ********/
-
-var _SDL_Texture* tex_button;
     finalize
         tex_button = _IMG_LoadTexture(renderer, "arrowbut.png");
     with
@@ -94,7 +94,7 @@ do
     
     par/or do
         every SDL_REDRAW do
-            _SDL_RenderCopyEx(_renderer,tex_arrow,null,&renderQuad,0/*angle*/,null,_SDL_FLIP_NONE);
+            _SDL_RenderCopyEx(_renderer,_tex_arrow,null,&renderQuad,0/*angle*/,null,_SDL_FLIP_NONE);
         end
     with
         await 5s;
