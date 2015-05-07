@@ -67,14 +67,14 @@ native do
 end
 
     finalize
-        tex_arrow = _IMG_LoadTexture(renderer, "arrow.png");
+        tex_arrow = _IMG_LoadTexture(_renderer, "arrow.png");
     with
         _SDL_DestroyTexture(tex_arrow);
     end
     _assert(tex_arrow != null);
 
     finalize
-        tex_button = _IMG_LoadTexture(renderer, "arrowbut.png");
+        tex_button = _IMG_LoadTexture(_renderer, "arrowbut.png");
     with
         _SDL_DestroyTexture(tex_button);
     end
