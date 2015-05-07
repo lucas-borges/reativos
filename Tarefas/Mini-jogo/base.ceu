@@ -1,0 +1,92 @@
+#include "c.ceu"
+#include "sdl.ceu"
+
+#define SCREEN_WIDTH 480
+#define SCREEN_HEIGHT 640
+
+input void SDL_REDRAW;
+input void SDL_QUIT;
+input _SDL_KeyboardEvent* SDL_KEYDOWN;
+
+/*********
+TODO
+
+*********/
+
+/******** Create SDL_Window (Destroy on finalization) ********/
+
+var _SDL_Window* window;
+    finalize
+        window = _SDL_CreateWindow("reativosDDR ceu",
+				_SDL_WINDOWPOS_CENTERED,
+				_SDL_WINDOWPOS_CENTERED,
+				SCREEN_WIDTH, SCREEN_HEIGHT,_SDL_WINDOW_SHOWN);
+    with
+        _SDL_DestroyWindow(window);
+    end
+
+/******** Create SDL_Renderer (Destroy on finalization) ********/
+
+var _SDL_Renderer* renderer;
+    finalize
+        renderer = _SDL_CreateRenderer(window, -1, _SDL_RENDERER_ACCELERATED | _SDL_RENDERER_PRESENTVSYNC);
+    with
+        _SDL_DestroyRenderer(renderer);
+    end
+
+/******** Load SDL_Texture (arrow) (Destroy on finalization) ********/
+
+var _SDL_Texture* tex_arrow;
+    finalize
+        tex_arrow = _IMG_LoadTexture(renderer, "arrow.png");
+    with
+        _SDL_DestroyTexture(tex_arrow);
+    end
+    _assert(tex_arrow != null);
+
+/******** Load SDL_Texture (button) (Destroy on finalization) ********/
+
+var _SDL_Texture* tex_button;
+    finalize
+        tex_button = _IMG_LoadTexture(renderer, "arrowbut.png");
+    with
+        _SDL_DestroyTexture(tex_button);
+    end
+    _assert(tex_button != null);
+
+
+/******** GAME? ********/
+
+par/or do
+    await SDL_QUIT;		//terminates everything
+with
+    every SDL_REDRAW do
+
+    end
+with
+
+
+
+with
+    /* update screen */
+    loop do
+        await SDL_REDRAW;
+        _SDL_RenderPresent(renderer);
+    end
+with
+    /* calculate FPS */
+    loop do
+        var int c = 0;
+        par/or do
+            every SDL_REDRAW do
+                c = c + 1;
+            end
+        with
+            await 1s;
+        end
+        //_printf("[FPS=%d] [orgs=%d]\n", c, _ORGS);
+	_printf("[FPS=%d] [orgs=?]\n", c);
+    end
+end
+
+escape 0;
