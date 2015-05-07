@@ -26,6 +26,7 @@ native @nohold _SDL_RenderCopyEx(); // para poder usar essa funcao
 #define BUTTON_PADD 20
 #define SCREEN_WIDTH 480
 #define SCREEN_HEIGHT 640
+#define BASE_SPEED 0.1
 
 input int  SDL_DT;
 input void SDL_REDRAW;
