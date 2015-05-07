@@ -82,7 +82,7 @@ var _SDL_Texture* tex_button;
 /******** [Cl_arrow] Arrow class ********/
 
 class Arrow with
-	var double y;
+	var float y;
 	_DDR_type type;
     //event void    ok;   // signalled when the object leaves the screen
 do
