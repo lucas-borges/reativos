@@ -14,7 +14,7 @@
 #include "c.ceu"
 #include "sdl.ceu"
 
-native @nohold _SDL_RenderCopyEx();
+native @nohold _SDL_RenderCopyEx(); // para poder usar essa funcao
 
 #define ARROW_WIDTH 64//296
 #define ARROW_HEIGHT 64//214
@@ -27,9 +27,12 @@ native @nohold _SDL_RenderCopyEx();
 #define SCREEN_WIDTH 480
 #define SCREEN_HEIGHT 640
 
+input int  SDL_DT;
 input void SDL_REDRAW;
 input void SDL_QUIT;
 input _SDL_KeyboardEvent* SDL_KEYDOWN;
+
+var float gameSpeed=BASE_SPEED; 
 
 /******** [a_t_enum] Arrow types enum ********/
 native do
@@ -89,25 +92,30 @@ class Arrow with
 	//_DDR_type type;
     //event void    ok;   // signalled when the object leaves the screen
 do
-    var _SDL_Rect renderQuad;
-    renderQuad.x=0;
+    _SDL_Rect renderQuad;
+    renderQuad.x=SCREEN_WIDTH/2;
+    renderQuad.y=SCREEN_HEIGHT-ARROW_HEIGHT;
     renderQuad.w=ARROW_WIDTH;
     renderQuad.h=ARROW_HEIGHT;
     
     par/or do
-        every SDL_REDRAW do
-
-            _SDL_RenderCopyEx(_renderer,_tex_arrow,null,&renderQuad,0/*angle*/,null,_SDL_FLIP_NONE);
-
-
-
-            //_SDL_RenderCopy(_renderer,_tex_arrow,null,&renderQuad);
+        var int dt;
+        every dt in SDL_DT do
+            y=y-gameSpeed*dt;
+            renderQuad.y=y;
+            if y>SCREEN_HEIGHT then
+                break;
+            end
         end
     with
-        await 5s;
+        every SDL_REDRAW do
+            _SDL_RenderCopyEx(_renderer,_tex_arrow, null ,&renderQuad,angle, null ,_SDL_FLIP_NONE);
+        end
     end
-    
 end
+
+/******** [Cl_format] Format class ********/
+
 
 /******** [G_beg] GAME? ********/
 
@@ -116,15 +124,17 @@ par/or do
 with
     /* set background color */
     every SDL_REDRAW do
-    _SDL_SetRenderDrawColor(_renderer,255,255,255,255);
-    _SDL_RenderClear(_renderer);
+        _SDL_SetRenderDrawColor(_renderer,255,255,255,255);
+        _SDL_RenderClear(_renderer);
     end
 with
-    spawn Arrow with
-        this.y=100;
-        //this.type=2;
-    end;
-	await 10s;
+    pool Arrow[] arrows
+    every 1s do
+        spawn Arrow in arrows with
+            this.y=-ARROW_HEIGHT;
+            //this.type=2;
+        end;
+    end
 
 with
     /* update screen */
