@@ -83,7 +83,7 @@ var _SDL_Texture* tex_button;
 
 class Arrow with
 	var float y;
-	_DDR_type type;
+	//_DDR_type type;
     //event void    ok;   // signalled when the object leaves the screen
 do
     var _SDL_Rect renderQuad;
@@ -113,7 +113,7 @@ with
 with
     spawn Arrow with
         this.y=100;
-        this.type=2;
+        //this.type=2;
     end;
 
 
