@@ -214,7 +214,7 @@ with
             end;
             par/or do //spawn arrows
                 
-                every 1s do
+                every (SCREEN_HEIGHT/(_gameSpeed*6))ms do
                     spawn Arrow in arrows with
                         this.y=-ARROW_HEIGHT;
                         this.type=_rand()%4;
