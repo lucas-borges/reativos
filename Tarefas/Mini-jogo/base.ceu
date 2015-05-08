@@ -127,11 +127,12 @@ end
 /******** [Cl_arrow] Arrow class ********/
 
 class Arrow with
-	var float y;
-	var int type;
+    var float y;
+    var int type;
     var bool visible=true;
+    event void ok;    // signalled when the object leaves the screen
 	//_DDR_type type;
-    //event void    ok;   // signalled when the object leaves the screen
+     
 do
     var _SDL_Rect renderQuad;
     renderQuad.w=ARROW_WIDTH;
@@ -202,10 +203,11 @@ with
     end
 with
     loop do
+        event void restart;
+
         par/or do //restart game on 'r'
             /* Main game loop */
             event int key_press;
-            event void restart;
             
             _gameSpeed=BASE_SPEED;
             var int i=0;
@@ -215,14 +217,30 @@ with
                 i=i+1;
             end;
             
-            par/or do //spawn arrows
+            par do //spawn arrows
                 
                 every (SCREEN_HEIGHT/(_gameSpeed*6))ms do
                     spawn Arrow in arrows with
                         this.y=-ARROW_HEIGHT;
                         this.type=_rand()%4;
                     end;
+
                 end
+
+
+		with
+			every SDL_REDRAW do
+    				loop (Arrow*)a in arrows do
+				        if a:y > (SCREEN_HEIGHT-BUTTON_OFFSET+BUTTON_HEIGHT+BUTTON_PADD)
+					and a:visible==true
+					
+				        then
+            					emit restart;
+				        end
+				end
+			end
+			
+
             with  //watch keys
                 var _SDL_KeyboardEvent* key;
                 
@@ -236,7 +254,7 @@ with
                         type_k=_left;
                     else/if key:keysym.sym==_SDLK_RIGHT then
                         type_k=_right;
-                    else/if key:keysym.sym==_SDLK_k then
+                    else/if key:keysym.sym==_SDLK_r then
                         emit restart;
                     end
                     if type_k >= 0 and type_k<=3 then
