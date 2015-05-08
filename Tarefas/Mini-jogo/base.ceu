@@ -87,16 +87,36 @@ end
     end
     _assert(_tex_button != null);
 
-/******** [Cl_format] Drawer class ********/
+/******** [Cl_format] formatter class ********/
 class Drawer with
     var int type;
     var int angle;
+    var int x;
+    var int r;
+    var int g;
+    var int b;
 	event void ok;
 do
-    if type == 1 then
+    r=255;g=255;b=255;
+    if type==up then //red
+        angle=270;
+        x=(SCREEN_WIDTH/5)*3-obj_width/2;
+        g=0;
+        b=0;
+    else/if type==down then //green
+        angle=90;
+        x=(SCREEN_WIDTH/5)*2-obj_width/2;
+        r=0;
+        b=0;
+    else/if type==right then //blue
         angle=0;
-    else
-        angle= 90;
+        x=(SCREEN_WIDTH/5)*4-obj_width/2;
+        r=0;
+        g=0;
+    else/if type==left then //yellow
+        angle=180;
+        x=(SCREEN_WIDTH/5)*1-obj_width/2;
+        b=0;
     end
 
 end
@@ -105,12 +125,11 @@ end
 
 class Arrow with
 	var float y;
-	var int t;
+	var int type;
 	//_DDR_type type;
     //event void    ok;   // signalled when the object leaves the screen
 do
     var _SDL_Rect renderQuad;
-    renderQuad.x=SCREEN_WIDTH/2;
     renderQuad.w=ARROW_WIDTH;
     renderQuad.h=ARROW_HEIGHT;
 
@@ -119,6 +138,12 @@ do
         finalize with
             _ORGS = _ORGS - 1;  // decrement on finalization
         end;
+    /*** format arrow ***/
+    var Formatter f with
+            this.type=type;
+    end;
+    renderQuad.x=f.x;
+
     
     par/or do
         var int dt;
@@ -130,11 +155,8 @@ do
             end
         end
     with
-        var Drawer d with
-            this.type=2;
-        end;
         every SDL_REDRAW do
-            _SDL_RenderCopyEx(_renderer,_tex_arrow, null ,&renderQuad,d.angle, null ,_SDL_FLIP_NONE);
+            _SDL_RenderCopyEx(_renderer,_tex_arrow, null ,&renderQuad,f.angle, null ,_SDL_FLIP_NONE);
         end
     end
 end
@@ -157,7 +179,7 @@ with
         every 1s do
             spawn Arrow in arrows with
                 this.y=0;
-                //this.type=2;
+                this.type=_rand()%4;
             end;
         end
 	
