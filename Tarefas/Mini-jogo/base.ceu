@@ -94,6 +94,10 @@ class Arrow with
 	//_DDR_type type;
     //event void    ok;   // signalled when the object leaves the screen
 do
+    var _SDL_Rect renderQuad;
+    renderQuad.x=SCREEN_WIDTH/2;
+    renderQuad.w=ARROW_WIDTH;
+    renderQuad.h=ARROW_HEIGHT;
 
     /*** count arrows ***/
     _ORGS = _ORGS + 1;          // increment on init
@@ -105,27 +109,32 @@ do
         var int dt;
         every dt in SDL_DT do
             y=y+_gameSpeed*dt;
+            renderQuad.y=y;
             if y>SCREEN_HEIGHT then
                 break;
             end
         end
     with
         do Drawer with
-            renderQuad.y=y;
+            this.type=t;
         end;
+        every SDL_REDRAW do
+            _SDL_RenderCopyEx(_renderer,_tex_arrow, null ,&renderQuad,angle, null ,_SDL_FLIP_NONE);
+        end
     end
 end
 
 /******** [Cl_format] Drawer class ********/
 class Drawer with
-     var _SDL_Rect renderQuad;
+    var int type
+    var int angle
 do
-        renderQuad.x=SCREEN_WIDTH/2;
-        renderQuad.w=ARROW_WIDTH;
-        renderQuad.h=ARROW_HEIGHT;
-        every SDL_REDRAW do
-            _SDL_RenderCopyEx(_renderer,_tex_arrow, null ,&renderQuad,0, null ,_SDL_FLIP_NONE);
-        end
+    if type == 1 then
+        angle=0;
+    else
+        angle= 90;
+    end
+
 end
 
 /******** [G_beg] GAME? ********/
