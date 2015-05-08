@@ -201,7 +201,7 @@ with
     loop do
         par/or do //restart game on 'r'
             /* Main game loop */
-            gameSpeed=BASE_SPEED;
+            _gameSpeed=BASE_SPEED;
             var int i=0;
             var Button[4] buttons with
                 this.type=i;
