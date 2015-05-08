@@ -6,7 +6,9 @@
 		[C_ren]     Create SDL_Renderer
 		[C_tex]    Load SDL_Texture 
 		
+        [Cl_format] Formatter class
 		[Cl_arrow]  Arrow class
+        [Cl_buttons] Buttons class
 		[G_beg]     GAME?
 		
 **********/
@@ -146,8 +148,7 @@ do
     end;
     renderQuad.x=f.x;
 
-    
-    par/or do
+    par/or do       //update position
         var int dt;
         every dt in SDL_DT do
             y=y+_gameSpeed*dt;
@@ -156,7 +157,7 @@ do
                 break;
             end
         end
-    with
+    with            //redraw
         every SDL_REDRAW do
             _SDL_SetTextureColorMod(_tex_arrow,f.r,f.g,f.b);
             _SDL_RenderCopyEx(_renderer,_tex_arrow, null ,&renderQuad,f.angle, null ,_SDL_FLIP_NONE);
@@ -164,7 +165,27 @@ do
     end
 end
 
+/******** [Cl_buttons] Buttons class ********/
 
+class Button with
+    var int type;
+do
+    var _SDL_Rect renderQuad;
+    renderQuad.w=BUTTON_WIDTH;
+    renderQuad.h=BUTTON_HEIGHT;
+    renderQuad.y=SCREEN_HEIGHT-BUTTON_OFFSET;
+    
+    var Formatter f with
+            this.type=type;
+            this.obj_width=BUTTON_WIDTH;
+    end;
+    renderQuad.x=f.x;
+    
+    every SDL_REDRAW do
+        _SDL_SetTextureColorMod(_tex_button,f.r,f.g,f.b);
+        _SDL_RenderCopyEx(_renderer,_tex_button, null ,&renderQuad,f.angle, null ,_SDL_FLIP_NONE);
+    end
+end
 
 /******** [G_beg] GAME? ********/
 
@@ -177,6 +198,10 @@ with
         _SDL_RenderClear(_renderer);
     end
 with
+    /* Main game loop */
+    var Button but with 
+        this.type=0;
+    end;
     loop do
         pool Arrow[] arrows;
         every 1s do
