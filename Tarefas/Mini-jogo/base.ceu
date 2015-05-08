@@ -1,16 +1,18 @@
 /*********
 		TOC
         
-		[a_t_enum]  Arrow types enum
-		[C_win]	    Create SDL_Window
-		[C_ren]     Create SDL_Renderer
-		[C_tex]    Load SDL_Texture 
+		[a_t_enum]      Arrow types enum
+		[C_win]	        Create SDL_Window
+		[C_ren]         Create SDL_Renderer
+		[C_tex]         Load SDL_Texture 
 		
-        [Cl_format] Formatter class
-		[Cl_arrow]  Arrow class
-        [Cl_buttons] Buttons class
-		[G_beg]     GAME?
+        [Cl_format]     Formatter class
+		[Cl_arrow]      Arrow class
+        [Cl_buttons]    Buttons class
+		[G_beg]         GAME
 		
+        
+TODO: change types from int to enum typedef        
 **********/
 
 #include "c.ceu"
@@ -191,7 +193,7 @@ do
     end
 end
 
-/******** [G_beg] GAME? ********/
+/******** [G_beg] GAME ********/
 
 par/or do
     await SDL_QUIT;		//terminates everything
@@ -202,10 +204,10 @@ with
         _SDL_RenderClear(_renderer);
     end
 with
-    loop do
+    loop do //restart loop
         event void restart;
 
-        par/or do //restart game on 'r'
+        par/or do //restart game on 'r' or arrow reaching botton of screen
             /* Main game loop */
             event int key_press;
             
@@ -226,20 +228,16 @@ with
                     end;
 
                 end
-
-
-		with
-			every SDL_REDRAW do
-    				loop (Arrow*)a in arrows do
-				        if a:y > (SCREEN_HEIGHT-BUTTON_OFFSET+BUTTON_HEIGHT+BUTTON_PADD)
-					and a:visible==true
-					
-				        then
-            					emit restart;
-				        end
-				end
-			end
-			
+            with //check if arrow reached bottom
+                every SDL_REDRAW do
+                    loop (Arrow*)a in arrows do
+                        if a:y > (SCREEN_HEIGHT-BUTTON_OFFSET+BUTTON_HEIGHT+BUTTON_PADD)
+                        and a:visible==true
+                        then
+                            emit restart;
+                        end
+                    end
+                end
 
             with  //watch keys
                 var _SDL_KeyboardEvent* key;
@@ -275,11 +273,11 @@ with
                         end
                     end
                 end
-            end
-        with
+            end //end par game
+        with  // restart event await
             await restart;
         end
-    end
+    end //end restart loop
 with
     /* update screen */
     every SDL_REDRAW do
