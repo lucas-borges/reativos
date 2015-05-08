@@ -205,12 +205,13 @@ with
             _gameSpeed=BASE_SPEED;
             var int i=0;
             event int key_press;
+            pool Arrow[] arrows;
             var Button[4] buttons with //create buttons
                 this.type=i;
                 i=i+1;
             end;
             par/or do //spawn arrows
-                pool Arrow[] arrows;
+                
                 every 1s do
                     spawn Arrow in arrows with
                         this.y=-ARROW_HEIGHT;
