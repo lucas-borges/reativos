@@ -199,10 +199,10 @@ with
     end
 with
     /* Main game loop */
-    pool Button[4] buttons;
+    
     var int i=0;
-    spawn Button in buttons with 
-        this.type=0;
+    var Button[4] buttons with
+        this.type=i;
         i=i+1;
     end;
     loop do
