@@ -198,22 +198,29 @@ with
         _SDL_RenderClear(_renderer);
     end
 with
-    /* Main game loop */
-    
-    var int i=0;
-    var Button[4] buttons with
-        this.type=i;
-        i=i+1;
-    end;
     loop do
-        pool Arrow[] arrows;
-        every 1s do
-            spawn Arrow in arrows with
-                this.y=-ARROW_HEIGHT;
-                this.type=_rand()%4;
+        par/or //restart game on 'r'
+            /* Main game loop */
+            gameSpeed=BASE_SPEED;
+            var int i=0;
+            var Button[4] buttons with
+                this.type=i;
+                i=i+1;
             end;
+            loop do
+                pool Arrow[] arrows;
+                every 1s do
+                    spawn Arrow in arrows with
+                        this.y=-ARROW_HEIGHT;
+                        this.type=_rand()%4;
+                    end;
+                end
+            
+            end
+        with
+            var _SDL_KeyboardEvent* key;
+            key = await SDL_KEYDOWN until key:keysym.sym==_SDLK_r;
         end
-	
     end
 with
     /* update screen */
