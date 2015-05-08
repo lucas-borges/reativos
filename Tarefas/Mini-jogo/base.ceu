@@ -199,7 +199,7 @@ with
     end
 with
     loop do
-        par/or //restart game on 'r'
+        par/or do //restart game on 'r'
             /* Main game loop */
             gameSpeed=BASE_SPEED;
             var int i=0;
@@ -215,7 +215,6 @@ with
                         this.type=_rand()%4;
                     end;
                 end
-            
             end
         with
             var _SDL_KeyboardEvent* key;
