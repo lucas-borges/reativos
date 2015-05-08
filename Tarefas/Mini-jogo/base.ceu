@@ -209,7 +209,7 @@ with
         pool Arrow[] arrows;
         every 1s do
             spawn Arrow in arrows with
-                this.y=0;
+                this.y=-ARROW_HEIGHT;
                 this.type=_rand()%4;
             end;
         end
