@@ -95,25 +95,26 @@ class Drawer with
     var int r;
     var int g;
     var int b;
+    var int obj_width;
 	event void ok;
 do
     r=255;g=255;b=255;
-    if type==up then //red
+    if type==_up then //red
         angle=270;
         x=(SCREEN_WIDTH/5)*3-obj_width/2;
         g=0;
         b=0;
-    else/if type==down then //green
+    else/if type==_down then //green
         angle=90;
         x=(SCREEN_WIDTH/5)*2-obj_width/2;
         r=0;
         b=0;
-    else/if type==right then //blue
+    else/if type==_right then //blue
         angle=0;
         x=(SCREEN_WIDTH/5)*4-obj_width/2;
         r=0;
         g=0;
-    else/if type==left then //yellow
+    else/if type==_left then //yellow
         angle=180;
         x=(SCREEN_WIDTH/5)*1-obj_width/2;
         b=0;
@@ -141,6 +142,7 @@ do
     /*** format arrow ***/
     var Formatter f with
             this.type=type;
+            this.obj_width=ARROW_WIDTH;
     end;
     renderQuad.x=f.x;
 
