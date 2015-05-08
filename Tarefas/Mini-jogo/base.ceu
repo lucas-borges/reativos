@@ -236,12 +236,12 @@ with
             with  //react to keys
                 var int key;
                 every key in key_press do
-                    if key >=0 and key <=3 do
+                    if key >=0 and key <=3 then
                         loop (Arrow*)a in arrows do
-                            if a:type==key and a:visible==true do
+                            if a:type==key and a:visible==true then
                                 if a:y>SCREEN_HEIGHT-BUTTON_OFFSET-BUTTON_PADD and 
                                 a:y+ARROW_HEIGHT<SCREEN_HEIGHT-BUTTON_OFFSET+BUTTON_HEIGHT+BUTTON_PADD
-                                do
+                                then
                                     a:activated=false;
                                     _gameSpeed=_gameSpeed+0.003;
                                 end
