@@ -129,7 +129,7 @@ end
 class Arrow with
 	var float y;
 	var int type;
-    var bool visible;
+    var bool visible=true;
 	//_DDR_type type;
     //event void    ok;   // signalled when the object leaves the screen
 do
