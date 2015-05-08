@@ -160,8 +160,10 @@ do
         end
     with            //redraw
         every SDL_REDRAW do
-            _SDL_SetTextureColorMod(_tex_arrow,f.r,f.g,f.b);
-            _SDL_RenderCopyEx(_renderer,_tex_arrow, null ,&renderQuad,f.angle, null ,_SDL_FLIP_NONE);
+            if visible==true then 
+                _SDL_SetTextureColorMod(_tex_arrow,f.r,f.g,f.b);
+                _SDL_RenderCopyEx(_renderer,_tex_arrow, null ,&renderQuad,f.angle, null ,_SDL_FLIP_NONE);
+            end
         end
     end
 end
