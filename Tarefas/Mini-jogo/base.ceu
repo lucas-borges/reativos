@@ -1,15 +1,15 @@
 /*********
-		TOC
+	TOC
         
-		[a_t_enum]      Arrow types enum
-		[C_win]	        Create SDL_Window
-		[C_ren]         Create SDL_Renderer
-		[C_tex]         Load SDL_Texture 
+        Arrow types enum
+        Create SDL_Window
+        Create SDL_Renderer
+        Load SDL_Texture 
 		
-        [Cl_format]     Formatter class
-		[Cl_arrow]      Arrow class
-        [Cl_buttons]    Buttons class
-		[G_beg]         GAME
+        Formatter class
+        Arrow class
+        Button class
+        GAME
 		
         
 TODO: change types from int to enum typedef        
@@ -38,7 +38,7 @@ input void SDL_QUIT;
 input _SDL_KeyboardEvent* SDL_KEYDOWN;
 
 
-/******** [a_t_enum] Arrow types enum ********/
+/******** Arrow types enum ********/
 native do
     typedef enum a_type {
         right,
@@ -49,7 +49,7 @@ native do
     int ORGS = 0;
     float gameSpeed=BASE_SPEED;
 end
-/******** [C_win] Create SDL_Window (Destroy on finalization) ********/
+/******** Create SDL_Window (Destroy on finalization) ********/
 
 var _SDL_Window* window;
     finalize
@@ -61,7 +61,7 @@ var _SDL_Window* window;
         _SDL_DestroyWindow(window);
     end
 
-/******** [C_ren] Create SDL_Renderer (Destroy on finalization) ********/
+/******** Create SDL_Renderer (Destroy on finalization) ********/
 native do
     SDL_Renderer* renderer=NULL;
 end
@@ -71,7 +71,7 @@ end
         _SDL_DestroyRenderer(_renderer);
     end
 
-/******** [C_tex] Load SDL_Texture  (Destroy on finalization) ********/
+/******** Load SDL_Texture  (Destroy on finalization) ********/
 
 native do
     SDL_Texture* tex_arrow, *tex_button;
@@ -91,7 +91,7 @@ end
     end
     _assert(_tex_button != null);
 
-/******** [Cl_format] Formatter class ********/
+/******** Formatter class ********/
 class Formatter with
     var int type;
     var int angle;
@@ -126,7 +126,7 @@ do
 
 end
 
-/******** [Cl_arrow] Arrow class ********/
+/******** Arrow class ********/
 
 class Arrow with
     var float y;
@@ -171,7 +171,7 @@ do
     end
 end
 
-/******** [Cl_buttons] Buttons class ********/
+/******** Buttons class ********/
 
 class Button with
     var int type;
@@ -193,7 +193,7 @@ do
     end
 end
 
-/******** [G_beg] GAME ********/
+/******** GAME ********/
 
 par/or do
     await SDL_QUIT;		//terminates everything
