@@ -203,17 +203,36 @@ with
             /* Main game loop */
             _gameSpeed=BASE_SPEED;
             var int i=0;
+            event int key_press;
             var Button[4] buttons with
                 this.type=i;
                 i=i+1;
             end;
-            loop do
-                pool Arrow[] arrows;
-                every 1s do
-                    spawn Arrow in arrows with
-                        this.y=-ARROW_HEIGHT;
-                        this.type=_rand()%4;
-                    end;
+            par/or do
+                loop do
+                    pool Arrow[] arrows;
+                    every 1s do
+                        spawn Arrow in arrows with
+                            this.y=-ARROW_HEIGHT;
+                            this.type=_rand()%4;
+                        end;
+                    end
+                end
+            with
+                var _SDL_KeyboardEvent* key;
+                
+                every key in SDL_KEYDOWN do
+                    var int type_k=-1;
+                    if key:keysym.sym==_SDLK_UP then
+                        type_k=_up;
+                    else/if key:keysym.sym==_SDLK_DOWN then
+                        type_k=_down;
+                    else/if key:keysym.sym==_SDLK_LEFT then
+                        type_k=_left;
+                    else/if key:keysym.sym==_SDLK_RIGHT then
+                        type_k=_right;
+                    end
+                    emit key_press => type_k;
                 end
             end
         with
