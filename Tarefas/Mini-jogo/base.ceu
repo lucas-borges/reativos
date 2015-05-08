@@ -87,10 +87,25 @@ end
     end
     _assert(_tex_button != null);
 
+/******** [Cl_format] Drawer class ********/
+class Drawer with
+    var int type;
+    var int angle;
+	event void ok;
+do
+    if type == 1 then
+        angle=0;
+    else
+        angle= 90;
+    end
+
+end
+
 /******** [Cl_arrow] Arrow class ********/
 
 class Arrow with
 	var float y;
+	var int t;
 	//_DDR_type type;
     //event void    ok;   // signalled when the object leaves the screen
 do
@@ -115,27 +130,16 @@ do
             end
         end
     with
-        do Drawer with
-            this.type=t;
+        var Drawer d with
+            this.type=2;
         end;
         every SDL_REDRAW do
-            _SDL_RenderCopyEx(_renderer,_tex_arrow, null ,&renderQuad,angle, null ,_SDL_FLIP_NONE);
+            _SDL_RenderCopyEx(_renderer,_tex_arrow, null ,&renderQuad,d.angle, null ,_SDL_FLIP_NONE);
         end
     end
 end
 
-/******** [Cl_format] Drawer class ********/
-class Drawer with
-    var int type
-    var int angle
-do
-    if type == 1 then
-        angle=0;
-    else
-        angle= 90;
-    end
 
-end
 
 /******** [G_beg] GAME? ********/
 
